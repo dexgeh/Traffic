@@ -12,7 +12,7 @@ Usage example
 
 A ```TestFilter``` class:
 
-```
+```Java
 package org.traffic.test;
 
 import java.io.IOException;
@@ -72,7 +72,7 @@ public class TestFilter implements Filter {
 
 And a ```web.xml```:
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://java.sun.com/xml/ns/javaee"
