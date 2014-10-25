@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.traffic.HandlerResult;
 
 @FunctionalInterface
-public interface HandlerMulti extends HandlerBase {
+public interface Handler0Multi extends HandlerBase {
 	public HandlerResult handle(
 		HttpServletRequest request,
 		HttpServletResponse response)

@@ -6,7 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.traffic.handler.Handler;
+import org.traffic.handler.Handler0;
 import org.traffic.handler.Handler1;
 import org.traffic.handler.Handler1Multi;
 import org.traffic.handler.Handler2;
@@ -18,7 +18,7 @@ import org.traffic.handler.Handler4Multi;
 import org.traffic.handler.Handler5;
 import org.traffic.handler.Handler5Multi;
 import org.traffic.handler.HandlerBase;
-import org.traffic.handler.HandlerMulti;
+import org.traffic.handler.Handler0Multi;
 import org.traffic.routes.Route;
 
 public class TrafficRouter {
@@ -37,7 +37,7 @@ public class TrafficRouter {
 					HandlerResult retval = HandlerResult.UNDEFINED;
 					if (route.handlers.length == 1) {
 						if (params.size() == 0) {
-							((Handler)handler).handle(request, response);
+							((Handler0)handler).handle(request, response);
 						} else if (params.size() == 1) {
 							((Handler1)handler).handle(request, response, params.get(0));
 						} else if (params.size() == 2) {
@@ -51,7 +51,7 @@ public class TrafficRouter {
 						}
 					} else {
 						if (params.size() == 0) {
-							retval = ((HandlerMulti)handler).handle(request, response);
+							retval = ((Handler0Multi)handler).handle(request, response);
 						} else if (params.size() == 1) {
 							retval = ((Handler1Multi)handler).handle(request, response, params.get(0));
 						} else if (params.size() == 2) {
@@ -81,58 +81,58 @@ public class TrafficRouter {
 
 	// method below copypasted from codegen output: do not add code manually under this comment
 
-	public TrafficRouter add(String method, String urlPattern, org.traffic.handler.Handler handler) {
+	public TrafficRouter add(String method, String urlPattern, org.traffic.handler.Handler0 handler) {
 		return internalAdd(method, urlPattern, handler);
 	}
-	public TrafficRouter get(String urlPattern, org.traffic.handler.Handler handler) {
+	public TrafficRouter get(String urlPattern, org.traffic.handler.Handler0 handler) {
 		return internalAdd("GET", urlPattern, handler);
 	}
-	public TrafficRouter post(String urlPattern, org.traffic.handler.Handler handler) {
+	public TrafficRouter post(String urlPattern, org.traffic.handler.Handler0 handler) {
 		return internalAdd("POST", urlPattern, handler);
 	}
-	public TrafficRouter put(String urlPattern, org.traffic.handler.Handler handler) {
+	public TrafficRouter put(String urlPattern, org.traffic.handler.Handler0 handler) {
 		return internalAdd("PUT", urlPattern, handler);
 	}
-	public TrafficRouter delete(String urlPattern, org.traffic.handler.Handler handler) {
+	public TrafficRouter delete(String urlPattern, org.traffic.handler.Handler0 handler) {
 		return internalAdd("DELETE", urlPattern, handler);
 	}
-	public TrafficRouter head(String urlPattern, org.traffic.handler.Handler handler) {
+	public TrafficRouter head(String urlPattern, org.traffic.handler.Handler0 handler) {
 		return internalAdd("HEAD", urlPattern, handler);
 	}
-	public TrafficRouter options(String urlPattern, org.traffic.handler.Handler handler) {
+	public TrafficRouter options(String urlPattern, org.traffic.handler.Handler0 handler) {
 		return internalAdd("OPTIONS", urlPattern, handler);
 	}
-	public TrafficRouter trace(String urlPattern, org.traffic.handler.Handler handler) {
+	public TrafficRouter trace(String urlPattern, org.traffic.handler.Handler0 handler) {
 		return internalAdd("TRACE", urlPattern, handler);
 	}
-	public TrafficRouter connect(String urlPattern, org.traffic.handler.Handler handler) {
+	public TrafficRouter connect(String urlPattern, org.traffic.handler.Handler0 handler) {
 		return internalAdd("CONNECT", urlPattern, handler);
 	}
-	public TrafficRouter add(String method, String urlPattern, org.traffic.handler.HandlerMulti... handlers) {
+	public TrafficRouter add(String method, String urlPattern, org.traffic.handler.Handler0Multi... handlers) {
 		return internalAdd(method, urlPattern, handlers);
 	}
-	public TrafficRouter get(String urlPattern, org.traffic.handler.HandlerMulti... handlers) {
+	public TrafficRouter get(String urlPattern, org.traffic.handler.Handler0Multi... handlers) {
 		return internalAdd("GET", urlPattern, handlers);
 	}
-	public TrafficRouter post(String urlPattern, org.traffic.handler.HandlerMulti... handlers) {
+	public TrafficRouter post(String urlPattern, org.traffic.handler.Handler0Multi... handlers) {
 		return internalAdd("POST", urlPattern, handlers);
 	}
-	public TrafficRouter put(String urlPattern, org.traffic.handler.HandlerMulti... handlers) {
+	public TrafficRouter put(String urlPattern, org.traffic.handler.Handler0Multi... handlers) {
 		return internalAdd("PUT", urlPattern, handlers);
 	}
-	public TrafficRouter delete(String urlPattern, org.traffic.handler.HandlerMulti... handlers) {
+	public TrafficRouter delete(String urlPattern, org.traffic.handler.Handler0Multi... handlers) {
 		return internalAdd("DELETE", urlPattern, handlers);
 	}
-	public TrafficRouter head(String urlPattern, org.traffic.handler.HandlerMulti... handlers) {
+	public TrafficRouter head(String urlPattern, org.traffic.handler.Handler0Multi... handlers) {
 		return internalAdd("HEAD", urlPattern, handlers);
 	}
-	public TrafficRouter options(String urlPattern, org.traffic.handler.HandlerMulti... handlers) {
+	public TrafficRouter options(String urlPattern, org.traffic.handler.Handler0Multi... handlers) {
 		return internalAdd("OPTIONS", urlPattern, handlers);
 	}
-	public TrafficRouter trace(String urlPattern, org.traffic.handler.HandlerMulti... handlers) {
+	public TrafficRouter trace(String urlPattern, org.traffic.handler.Handler0Multi... handlers) {
 		return internalAdd("TRACE", urlPattern, handlers);
 	}
-	public TrafficRouter connect(String urlPattern, org.traffic.handler.HandlerMulti... handlers) {
+	public TrafficRouter connect(String urlPattern, org.traffic.handler.Handler0Multi... handlers) {
 		return internalAdd("CONNECT", urlPattern, handlers);
 	}
 	public TrafficRouter add(String method, String urlPattern, org.traffic.handler.Handler1 handler) {

@@ -1,6 +1,6 @@
 package org.traffic.utility;
 
-import org.traffic.handler.Handler;
+import org.traffic.handler.Handler0;
 import org.traffic.handler.Handler1;
 import org.traffic.handler.Handler1Multi;
 import org.traffic.handler.Handler2;
@@ -11,12 +11,12 @@ import org.traffic.handler.Handler4;
 import org.traffic.handler.Handler4Multi;
 import org.traffic.handler.Handler5;
 import org.traffic.handler.Handler5Multi;
-import org.traffic.handler.HandlerMulti;
+import org.traffic.handler.Handler0Multi;
 
 public class CodeGen {
 	public static void main(String[] args) {
 		for (Class<?> c : new Class<?>[] {
-			Handler.class, HandlerMulti.class,
+			Handler0.class, Handler0Multi.class,
 			Handler1.class, Handler1Multi.class,
 			Handler2.class, Handler2Multi.class,
 			Handler3.class, Handler3Multi.class,
