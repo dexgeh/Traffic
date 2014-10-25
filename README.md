@@ -16,7 +16,7 @@ Currently supported http method are:
 - TRACE
 - CONNECT
 
-A ```TrafficRouter``` has methods for adding routes, named after lowercase HTTP methods, and a dispatch method to execute the routing; it will return a ```true``` value if a route matching the request was found and ```false``` otherwise.
+A ```TrafficRouter``` object has methods for adding routes, named after lowercase HTTP methods, and a ```dispatch``` method to execute the routing; it will return a ```true``` value if a route matching the request was found and ```false``` otherwise.
 
 It also has generic ```add``` method for  non-standard HTTP methods.
 
