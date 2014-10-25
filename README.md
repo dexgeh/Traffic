@@ -90,7 +90,7 @@ public class TestFilter implements Filter {
 			}
 			return CONTINUE;
 		}, (req, res, id) -> {
-			// if the previous handler does not throw an exception
+			// if the previous handler return CONTINUE
 			Bookmark bookmark = db.fetch((User) req.getAttribute("loggedUser"), id);
 			req.setAttribute("bookmark", bookmark);
 			req.getRequestDispatcher("/pages/bookmark.jsp").forward(req, res);
