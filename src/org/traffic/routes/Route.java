@@ -29,7 +29,7 @@ public class Route {
 		}
 	}
 
-	public List<String> match(HttpServletRequest request) {
+	public List<String> matchGetParams(HttpServletRequest request) {
 		if (!request.getMethod().equals(method)) {
 			return null;
 		}

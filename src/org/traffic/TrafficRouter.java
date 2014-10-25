@@ -23,10 +23,10 @@ public class TrafficRouter {
 		return routes.toString();
 	}
 
-	public boolean route(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public boolean dispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		for (Route route : routes) {
 			List<String> params = null;
-			if ((params = route.match(request)) != null) {
+			if ((params = route.matchGetParams(request)) != null) {
 				for (HandlerBase handler : route.handlers) {
 					switch (params.size()) {
 					case 0:
@@ -54,121 +54,123 @@ public class TrafficRouter {
 		}
 		return false;
 	}
-
-	public TrafficRouter add(String method, String urlPattern, HandlerBase... handlers) {
+	public TrafficRouter add(String method, String urlPattern, Handler...handlers) {
 		routes.add(new Route(method, urlPattern, handlers));
 		return this;
 	}
-
-	public TrafficRouter get(String urlPattern, HandlerBase... handlers) {
+	public TrafficRouter get(String urlPattern, Handler... handlers) {
 		return add("GET", urlPattern, handlers);
 	}
 
-	public TrafficRouter post(String urlPattern, HandlerBase... handlers) {
+	public TrafficRouter post(String urlPattern, Handler... handlers) {
 		return add("POST", urlPattern, handlers);
 	}
 
-	public TrafficRouter put(String urlPattern, HandlerBase... handlers) {
+	public TrafficRouter put(String urlPattern, Handler... handlers) {
 		return add("PUT", urlPattern, handlers);
 	}
 
-	public TrafficRouter delete(String urlPattern, HandlerBase... handlers) {
+	public TrafficRouter delete(String urlPattern, Handler... handlers) {
 		return add("DELETE", urlPattern, handlers);
 	}
 
-	public TrafficRouter get(String urlPattern, Handler handler) {
-		return add("GET", urlPattern, handler);
+	public TrafficRouter add(String method, String urlPattern, Handler1...handlers) {
+		routes.add(new Route(method, urlPattern, handlers));
+		return this;
+	}
+	public TrafficRouter get(String urlPattern, Handler1... handlers) {
+		return add("GET", urlPattern, handlers);
 	}
 
-	public TrafficRouter post(String urlPattern, Handler handler) {
-		return add("POST", urlPattern, handler);
+	public TrafficRouter post(String urlPattern, Handler1... handlers) {
+		return add("POST", urlPattern, handlers);
 	}
 
-	public TrafficRouter put(String urlPattern, Handler handler) {
-		return add("PUT", urlPattern, handler);
+	public TrafficRouter put(String urlPattern, Handler1... handlers) {
+		return add("PUT", urlPattern, handlers);
 	}
 
-	public TrafficRouter delete(String urlPattern, Handler handler) {
-		return add("DELETE", urlPattern, handler);
+	public TrafficRouter delete(String urlPattern, Handler1... handlers) {
+		return add("DELETE", urlPattern, handlers);
 	}
 
-	public TrafficRouter get(String urlPattern, Handler1 handler) {
-		return add("GET", urlPattern, handler);
+	public TrafficRouter add(String method, String urlPattern, Handler2...handlers) {
+		routes.add(new Route(method, urlPattern, handlers));
+		return this;
+	}
+	public TrafficRouter get(String urlPattern, Handler2... handlers) {
+		return add("GET", urlPattern, handlers);
 	}
 
-	public TrafficRouter post(String urlPattern, Handler1 handler) {
-		return add("POST", urlPattern, handler);
+	public TrafficRouter post(String urlPattern, Handler2... handlers) {
+		return add("POST", urlPattern, handlers);
 	}
 
-	public TrafficRouter put(String urlPattern, Handler1 handler) {
-		return add("PUT", urlPattern, handler);
+	public TrafficRouter put(String urlPattern, Handler2... handlers) {
+		return add("PUT", urlPattern, handlers);
 	}
 
-	public TrafficRouter delete(String urlPattern, Handler1 handler) {
-		return add("DELETE", urlPattern, handler);
+	public TrafficRouter delete(String urlPattern, Handler2... handlers) {
+		return add("DELETE", urlPattern, handlers);
 	}
 
-	public TrafficRouter get(String urlPattern, Handler2 handler) {
-		return add("GET", urlPattern, handler);
+	public TrafficRouter add(String method, String urlPattern, Handler3...handlers) {
+		routes.add(new Route(method, urlPattern, handlers));
+		return this;
+	}
+	public TrafficRouter get(String urlPattern, Handler3... handlers) {
+		return add("GET", urlPattern, handlers);
 	}
 
-	public TrafficRouter post(String urlPattern, Handler2 handler) {
-		return add("POST", urlPattern, handler);
+	public TrafficRouter post(String urlPattern, Handler3... handlers) {
+		return add("POST", urlPattern, handlers);
 	}
 
-	public TrafficRouter put(String urlPattern, Handler2 handler) {
-		return add("PUT", urlPattern, handler);
+	public TrafficRouter put(String urlPattern, Handler3... handlers) {
+		return add("PUT", urlPattern, handlers);
 	}
 
-	public TrafficRouter delete(String urlPattern, Handler2 handler) {
-		return add("DELETE", urlPattern, handler);
+	public TrafficRouter delete(String urlPattern, Handler3... handlers) {
+		return add("DELETE", urlPattern, handlers);
 	}
 
-	public TrafficRouter get(String urlPattern, Handler3 handler) {
-		return add("GET", urlPattern, handler);
+	public TrafficRouter add(String method, String urlPattern, Handler4...handlers) {
+		routes.add(new Route(method, urlPattern, handlers));
+		return this;
+	}
+	public TrafficRouter get(String urlPattern, Handler4... handlers) {
+		return add("GET", urlPattern, handlers);
 	}
 
-	public TrafficRouter post(String urlPattern, Handler3 handler) {
-		return add("POST", urlPattern, handler);
+	public TrafficRouter post(String urlPattern, Handler4... handlers) {
+		return add("POST", urlPattern, handlers);
 	}
 
-	public TrafficRouter put(String urlPattern, Handler3 handler) {
-		return add("PUT", urlPattern, handler);
+	public TrafficRouter put(String urlPattern, Handler4... handlers) {
+		return add("PUT", urlPattern, handlers);
 	}
 
-	public TrafficRouter delete(String urlPattern, Handler3 handler) {
-		return add("DELETE", urlPattern, handler);
+	public TrafficRouter delete(String urlPattern, Handler4... handlers) {
+		return add("DELETE", urlPattern, handlers);
 	}
 
-	public TrafficRouter get(String urlPattern, Handler4 handler) {
-		return add("GET", urlPattern, handler);
+	public TrafficRouter add(String method, String urlPattern, Handler5...handlers) {
+		routes.add(new Route(method, urlPattern, handlers));
+		return this;
+	}
+	public TrafficRouter get(String urlPattern, Handler5... handlers) {
+		return add("GET", urlPattern, handlers);
 	}
 
-	public TrafficRouter post(String urlPattern, Handler4 handler) {
-		return add("POST", urlPattern, handler);
+	public TrafficRouter post(String urlPattern, Handler5... handlers) {
+		return add("POST", urlPattern, handlers);
 	}
 
-	public TrafficRouter put(String urlPattern, Handler4 handler) {
-		return add("PUT", urlPattern, handler);
+	public TrafficRouter put(String urlPattern, Handler5... handlers) {
+		return add("PUT", urlPattern, handlers);
 	}
 
-	public TrafficRouter delete(String urlPattern, Handler4 handler) {
-		return add("DELETE", urlPattern, handler);
-	}
-
-	public TrafficRouter get(String urlPattern, Handler5 handler) {
-		return add("GET", urlPattern, handler);
-	}
-
-	public TrafficRouter post(String urlPattern, Handler5 handler) {
-		return add("POST", urlPattern, handler);
-	}
-
-	public TrafficRouter put(String urlPattern, Handler5 handler) {
-		return add("PUT", urlPattern, handler);
-	}
-
-	public TrafficRouter delete(String urlPattern, Handler5 handler) {
-		return add("DELETE", urlPattern, handler);
+	public TrafficRouter delete(String urlPattern, Handler5... handlers) {
+		return add("DELETE", urlPattern, handlers);
 	}
 }

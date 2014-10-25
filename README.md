@@ -15,8 +15,8 @@ A ```TestFilter``` class:
 ```Java
 package org.traffic.test;
 
-import java.io.IOException;
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
@@ -25,39 +25,47 @@ import org.traffic.TrafficRouter;
 public class TestFilter implements Filter {
 	private HashMap<Long, String> users = new HashMap<>();
 	private long seq = 1;
-	private TrafficRouter router = null;
-	@Override
-	public void init(FilterConfig config) throws ServletException {
-		router = new TrafficRouter()
-			.get("/", (req, res) -> {
-				res.getWriter().println("index!");
-			})
-			.get("/users", (req, res) -> {
+	private TrafficRouter router = new TrafficRouter()
+		// simplest route
+		.get("/", (req, res) -> {
+			res.getWriter().println("index!");
+		})
+		// example of positional parameters
+		.get("/users", (req, res) -> {
+			res.getWriter().println(users);
+		})
+		.put("/users/new/:name", (req, res, name) -> {
+			users.put(seq++, name);
+			res.getWriter().println(users);
+		})
+		.post("/users/edit/:id/:name", (req, res, id, name) -> {
+			if (users.containsKey(Long.parseLong(id))) {
+				users.put(Long.parseLong(id), name);
 				res.getWriter().println(users);
-			})
-			.put("/users/new/:name", (req, res, name) -> {
-				users.put(seq++, name);
-				res.getWriter().println(users);
-			})
-			.post("/users/edit/:id/:name", (req, res, id, name) -> {
-				if (users.containsKey(Long.parseLong(id))) {
-					users.put(Long.parseLong(id), name);
-					res.getWriter().println(users);
-				} else {
-					res.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
-				}
-			})
-			.delete("/users/:id", (req, res, id) -> {
-				users.remove(Long.parseLong(id));
-				res.getWriter().println(users);
-			})
-			;
-	}
+			} else {
+				res.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
+			}
+		})
+		.delete("/users/:id", (req, res, id) -> {
+			users.remove(Long.parseLong(id));
+			res.getWriter().println(users);
+		})
+		// multiple handlers for same route
+		.get("/bookmarks/:id", (req, res, id) -> {
+			if (req.getSession().getAttribute("loggedUser") == null) {
+				throw new Exception("User is not logged in");
+			}
+		}, (req, res, id) -> {
+			// if the previous handler does not throw an exception
+			Bookmark bookmark = db.fetch((User) req.getAttribute("loggedUser"), id);
+			req.getRequestDispatcher("/pages/bookmark.jsp").forward(req, res);
+		})
+	;
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 		throws IOException, ServletException {
 		try {
-			if (router.route((HttpServletRequest) request, (HttpServletResponse) response)) {
+			if (router.dispatch((HttpServletRequest) request, (HttpServletResponse) response)) {
 				return;
 			}
 		} catch (Exception e) {
@@ -65,8 +73,8 @@ public class TestFilter implements Filter {
 		}
 		chain.doFilter(request, response);
 	}
-	@Override
-	public void destroy() {}
+	@Override public void init(FilterConfig config) throws ServletException {}
+	@Override public void destroy() {}
 }
 ```
 
