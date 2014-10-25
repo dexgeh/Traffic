@@ -5,7 +5,38 @@ Traffic is an http router for java web applications built around the new java 8 
 
 It is inspired by express' router for node.js.
 
-Currently support GET/POST/PUT/DELETE for building restful API's, and a generic method to add any method.
+Currently supported http method are:
+
+- GET
+- POST
+- PUT
+- DELETE
+- HEAD
+- OPTIONS
+- TRACE
+- CONNECT
+
+A ```TrafficRouter``` has methods for adding routes, named after lowercase HTTP methods, and a dispatch method to execute the routing; it will return a ```true``` value if a route matching the request was found and ```false``` otherwise.
+
+It also has generic ```add``` method for  non-standard HTTP methods.
+
+A route is defined using the method matching the HTTP method, and a path with the syntax show below:
+
+```
+.get("/path/:variable", (req, res, variable) -> {
+	// your code here
+})
+```
+
+Valid path are ```/``` or multiple path element separated with ```/```.
+
+A path element can be a fixed string or a variable, prefixed with ```:```.
+
+Variable names are matched against a regex ```[a-zA-Z][a-zA-Z0-9]+```, and are captured in the order that they have in the url and given to the handler.
+
+It is mandatory to have matching url and signatures.
+
+Handlers actually support from 0 to 5 variables, and it is possible to add more than one handler to a single route; they are processed in in the order specified, and they have to signal the router about the behavior processing: continue processing other handlers or skip them. 
 
 Usage example
 -------------
