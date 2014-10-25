@@ -13,19 +13,30 @@ public class Route {
 	public final String method;
 	public final Pattern urlPatternRgx;
 	public final HandlerBase[] handlers;
+	public final int paramArity;
 
 	public Route(String method, String urlPattern, HandlerBase... handlers) {
 		validateUrlPattern(urlPattern);
 		this.method = method;
 		this.urlPatternRgx = urlPatternToRegex(urlPattern);
 		this.handlers = handlers;
+		this.paramArity = matchGetParams(method, urlPattern).size();
+		checkHandlersArity();
 	}
 
 	private static Pattern urlPatternFormat = Pattern.compile("^(/|(/[^/]+)+)$");
 
-	private void validateUrlPattern(String urlPattern) {
+	private static void validateUrlPattern(String urlPattern) {
 		if (!urlPatternFormat.matcher(urlPattern).find()) {
 			throw new IllegalArgumentException("Invalid url pattern " + urlPattern);
+		}
+	}
+
+	private void checkHandlersArity() {
+		for (HandlerBase handler : handlers) {
+			if (handler.getClass().getSimpleName().indexOf(String.valueOf(paramArity)) == -1) {
+				throw new IllegalArgumentException("Handler signature does not match the url number of variables");
+			}
 		}
 	}
 
@@ -47,15 +58,20 @@ public class Route {
 	}
 
 	public List<String> matchGetParams(HttpServletRequest request) {
-		if (!request.getMethod().equals(method)) {
-			return null;
-		}
+		String method = request.getMethod();
 		String path = request.getPathInfo();
 		if (path == null) {
 			path = request.getRequestURI().substring(request.getContextPath().length());
 		}
 		if (path.indexOf('?') != -1) {
 			path = path.substring(0, path.indexOf('?'));
+		}
+		return matchGetParams(method, path);
+	}
+
+	private List<String> matchGetParams(String method, String path) {
+		if (!method.equals(this.method)) {
+			return null;
 		}
 		Matcher matcher = urlPatternRgx.matcher(path);
 		if (matcher.find()) {
