@@ -1,6 +1,12 @@
 package org.traffic.utility;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+
 import org.traffic.handler.Handler0;
+import org.traffic.handler.Handler0Multi;
 import org.traffic.handler.Handler1;
 import org.traffic.handler.Handler1Multi;
 import org.traffic.handler.Handler2;
@@ -11,10 +17,30 @@ import org.traffic.handler.Handler4;
 import org.traffic.handler.Handler4Multi;
 import org.traffic.handler.Handler5;
 import org.traffic.handler.Handler5Multi;
-import org.traffic.handler.Handler0Multi;
 
 public class CodeGen {
-	public static void main(String[] args) {
+	private static String readResourceAsUTF8String(String fileName) throws Exception {
+		InputStream in = CodeGen.class.getClassLoader().getResourceAsStream("org/traffic/utility/" + fileName);
+		byte[] buffer = new byte[4096];
+		int len;
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		while ((len = in.read(buffer)) != -1) {
+			out.write(buffer, 0, len);
+		}
+		return new String(out.toByteArray(), Charset.forName("UTF-8"));
+	}
+	private static String template(String template, HashMap<String, String> params) {
+		String output = template;
+		for (String key : params.keySet()) {
+			output = output.replaceAll("\\{" + key + "\\}", params.get(key));
+		}
+		return output;
+	}
+	public static void main(String[] args) throws Exception {
+		String add = readResourceAsUTF8String("add.template");
+		String addMulti = readResourceAsUTF8String("addMulti.template");
+		String method = readResourceAsUTF8String("method.template");
+		String methodMulti = readResourceAsUTF8String("methodMulti.template");
 		for (Class<?> c : new Class<?>[] {
 			Handler0.class, Handler0Multi.class,
 			Handler1.class, Handler1Multi.class,
@@ -23,13 +49,14 @@ public class CodeGen {
 			Handler4.class, Handler4Multi.class,
 			Handler5.class, Handler5Multi.class,}) {
 			boolean multi = c.getName().endsWith("Multi");
-			System.out.println("\tpublic TrafficRouter add(String method, String urlPattern, "+c.getName()+ (multi?"...":"")+" handler"+(multi?"s":"")+") {");
-			System.out.println("\t\treturn internalAdd(method, urlPattern, handler"+(multi?"s":"")+");");
-			System.out.println("\t}");
-			for (String method : new String[]{"GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "TRACE", "CONNECT"}) {
-				System.out.println("\tpublic TrafficRouter "+method.toLowerCase()+"(String urlPattern, "+c.getName()+ (multi?"...":"")+" handler"+(multi?"s":"")+") {");
-				System.out.println("\t\treturn internalAdd(\""+method+"\", urlPattern, handler"+(multi?"s":"")+");");
-				System.out.println("\t}");
+			HashMap<String, String> params = new HashMap<>();
+			params.put("className", c.getName());
+			System.out.println(template(multi ? addMulti : add, params));
+			for (String methodUpcase : new String[] {"GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "TRACE", "CONNECT"}) {
+				String methodLowcase = methodUpcase.toLowerCase();
+				params.put("methodUpcase", methodUpcase);
+				params.put("methodLowcase", methodLowcase);
+				System.out.println(template(multi ? methodMulti : method, params));
 			}
 		}
 	}

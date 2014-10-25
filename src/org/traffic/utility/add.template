@@ -1,0 +1,3 @@
+	public TrafficRouter add(String method, String urlPattern, {className} handler) {
+		return internalAdd(method, urlPattern, handler);
+	}

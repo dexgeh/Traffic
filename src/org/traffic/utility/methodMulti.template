@@ -1,0 +1,3 @@
+	public TrafficRouter {methodLowcase}(String urlPattern, {className}... handlers) {
+		return internalAdd("{methodUpcase}", urlPattern, handlers);
+	}
