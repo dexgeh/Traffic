@@ -43,7 +43,7 @@ It is mandatory for multiple handlers to have matching url and signature.
 Usage example
 -------------
 
-A ```TestFilter``` class:
+A ```SampleFilter``` class show how to use the router:
 
 ```Java
 package org.traffic.test;
@@ -58,7 +58,7 @@ import org.traffic.TrafficRouter;
 import static org.traffic.HandlerResult.SKIP;
 import static org.traffic.HandlerResult.CONTINUE;
 
-public class TestFilter implements Filter {
+public class SampleFilter implements Filter {
 	private HashMap<Long, String> users = new HashMap<>();
 	private long seq = 1;
 	private TrafficRouter router = new TrafficRouter()
@@ -117,7 +117,7 @@ public class TestFilter implements Filter {
 }
 ```
 
-And a ```web.xml```:
+A ```web.xml``` file to map the filter to any request to the webapp:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -127,17 +127,17 @@ And a ```web.xml```:
 	id="WebApp_ID" version="3.0">
   <display-name>TrafficTest</display-name>
   <filter>
-  	<filter-name>TrafficTest</filter-name>
-  	<filter-class>org.traffic.test.TestFilter</filter-class>
+  	<filter-name>SampleFilter</filter-name>
+  	<filter-class>org.traffic.test.SampleFilter</filter-class>
   </filter>
   <filter-mapping>
-  	<filter-name>TrafficTest</filter-name>
+  	<filter-name>SampleFilter</filter-name>
   	<url-pattern>*</url-pattern>
   </filter-mapping>
 </web-app>
 ```
 
-A test session (interactive unix shell and curl):
+A test session (interactive unix shell and curl) showing some requests:
 
 ```
 $ curl http://localhost:8080/TrafficTest/
