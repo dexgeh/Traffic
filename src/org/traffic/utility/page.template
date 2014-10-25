@@ -1,0 +1,3 @@
+	public TrafficRouter {methodLowcase}(String urlPattern, String target) {
+		return internalAddPage("{methodUpcase}", urlPattern, target);
+	}

@@ -33,6 +33,19 @@ Handlers actually support from 0 to 5 variables, and it is possible to add more 
 
 It is mandatory for multiple handlers to have matching url and signature. 
 
+```TrafficRouter``` provides also a shortcuts for direct jsp pages, in the form:
+
+```Java
+router.get("/hello/:what", "/pages/hello.jsp");
+```
+
+The variables values are copied in the request scope, to be used in jstl or direct jsp scriptlet via getAttribute.
+
+```JSP
+<p>hello <%= request.getAttribute("what") %></p>
+<p>also ${what} works</p>
+```
+
 Usage example
 -------------
 
@@ -92,6 +105,7 @@ public class SampleFilter implements Filter {
 			req.getRequestDispatcher("/pages/bookmark.jsp").forward(req, res);
 			return CONTINUE;
 		})
+		.get("/about/:word", "/about.jsp")
 	;
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

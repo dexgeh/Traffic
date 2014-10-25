@@ -74,6 +74,51 @@ public class TrafficRouter {
 		return false;
 	}
 
+	private TrafficRouter internalAddPage(String method, String urlPattern, String dispatchTarget) {
+		List<String> paramNames = Route.getParamNames(urlPattern);
+		if (paramNames.size() == 0) {
+			internalAdd(method, urlPattern, (Handler0) (req, res) -> {
+				req.getRequestDispatcher(dispatchTarget).forward(req, res);
+			});
+		} else if (paramNames.size() == 1) {
+			internalAdd(method, urlPattern, (Handler1) (req, res, param0) -> {
+				req.setAttribute(paramNames.get(0), param0);
+				req.getRequestDispatcher(dispatchTarget).forward(req, res);
+			});
+		} else if (paramNames.size() == 2) {
+			internalAdd(method, urlPattern, (Handler2) (req, res, param0, param1) -> {
+				req.setAttribute(paramNames.get(0), param0);
+				req.setAttribute(paramNames.get(1), param1);
+				req.getRequestDispatcher(dispatchTarget).forward(req, res);
+			});
+		} else if (paramNames.size() == 3) {
+			internalAdd(method, urlPattern, (Handler3) (req, res, param0, param1, param2) -> {
+				req.setAttribute(paramNames.get(0), param0);
+				req.setAttribute(paramNames.get(1), param1);
+				req.setAttribute(paramNames.get(2), param2);
+				req.getRequestDispatcher(dispatchTarget).forward(req, res);
+			});
+		} else if (paramNames.size() == 4) {
+			internalAdd(method, urlPattern, (Handler4) (req, res, param0, param1, param2, param3) -> {
+				req.setAttribute(paramNames.get(0), param0);
+				req.setAttribute(paramNames.get(1), param1);
+				req.setAttribute(paramNames.get(2), param2);
+				req.setAttribute(paramNames.get(3), param3);
+				req.getRequestDispatcher(dispatchTarget).forward(req, res);
+			});
+		} else if (paramNames.size() == 5) {
+			internalAdd(method, urlPattern, (Handler5) (req, res, param0, param1, param2, param3, param4) -> {
+				req.setAttribute(paramNames.get(0), param0);
+				req.setAttribute(paramNames.get(1), param1);
+				req.setAttribute(paramNames.get(2), param2);
+				req.setAttribute(paramNames.get(3), param3);
+				req.setAttribute(paramNames.get(4), param4);
+				req.getRequestDispatcher(dispatchTarget).forward(req, res);
+			});
+		}
+		return this;
+	}
+
 	private TrafficRouter internalAdd(String method, String urlPattern, HandlerBase...handlers) {
 		routes.add(new Route(method, urlPattern, handlers));
 		return this;
@@ -404,6 +449,30 @@ public class TrafficRouter {
 	}
 	public TrafficRouter connect(String urlPattern, org.traffic.handler.Handler5Multi... handlers) {
 		return internalAdd("CONNECT", urlPattern, handlers);
+	}
+	public TrafficRouter get(String urlPattern, String target) {
+		return internalAddPage("GET", urlPattern, target);
+	}
+	public TrafficRouter post(String urlPattern, String target) {
+		return internalAddPage("POST", urlPattern, target);
+	}
+	public TrafficRouter put(String urlPattern, String target) {
+		return internalAddPage("PUT", urlPattern, target);
+	}
+	public TrafficRouter delete(String urlPattern, String target) {
+		return internalAddPage("DELETE", urlPattern, target);
+	}
+	public TrafficRouter head(String urlPattern, String target) {
+		return internalAddPage("HEAD", urlPattern, target);
+	}
+	public TrafficRouter options(String urlPattern, String target) {
+		return internalAddPage("OPTIONS", urlPattern, target);
+	}
+	public TrafficRouter trace(String urlPattern, String target) {
+		return internalAddPage("TRACE", urlPattern, target);
+	}
+	public TrafficRouter connect(String urlPattern, String target) {
+		return internalAddPage("CONNECT", urlPattern, target);
 	}
 
 }

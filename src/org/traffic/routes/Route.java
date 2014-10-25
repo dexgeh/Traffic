@@ -40,7 +40,7 @@ public class Route {
 		}
 	}
 
-	private String escapeRegexChars(String urlPattern) {
+	private static String escapeRegexChars(String urlPattern) {
 		String toEscape = ".+*?^$[](){}";
 		StringBuilder out = new StringBuilder();
 		for (char c : urlPattern.toCharArray()) {
@@ -53,7 +53,7 @@ public class Route {
 		return out.toString();
 	}
 
-	private Pattern urlPatternToRegex(String urlPattern) {
+	private static Pattern urlPatternToRegex(String urlPattern) {
 		return Pattern.compile("^" + escapeRegexChars(urlPattern).replaceAll("/:[a-zA-Z][a-zA-Z0-9]+", "/([^/]+)") + "$");
 	}
 
@@ -78,6 +78,19 @@ public class Route {
 			List<String> params = new ArrayList<String>();
 			for (int i = 1; i <= matcher.groupCount(); i++) {
 				params.add(matcher.group(i));
+			}
+			return params;
+		}
+		return null;
+	}
+
+	public static List<String> getParamNames(String urlPattern) {
+		Pattern rgx = urlPatternToRegex(urlPattern);
+		Matcher matcher = rgx.matcher(urlPattern);
+		if (matcher.find()) {
+			List<String> params = new ArrayList<String>();
+			for (int i = 1; i <= matcher.groupCount(); i++) {
+				params.add(matcher.group(i).substring(1));
 			}
 			return params;
 		}

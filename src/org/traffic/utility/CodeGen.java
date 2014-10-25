@@ -36,28 +36,40 @@ public class CodeGen {
 		}
 		return output;
 	}
+	private static Class<?>[] handlerClasses = new Class<?>[] {
+		Handler0.class, Handler0Multi.class,
+		Handler1.class, Handler1Multi.class,
+		Handler2.class, Handler2Multi.class,
+		Handler3.class, Handler3Multi.class,
+		Handler4.class, Handler4Multi.class,
+		Handler5.class, Handler5Multi.class,};
+
+	private static String[] httpMethods = new String[] {"GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "TRACE", "CONNECT"};
+
 	public static void main(String[] args) throws Exception {
 		String add = readResourceAsUTF8String("add.template");
 		String addMulti = readResourceAsUTF8String("addMulti.template");
 		String method = readResourceAsUTF8String("method.template");
 		String methodMulti = readResourceAsUTF8String("methodMulti.template");
-		for (Class<?> c : new Class<?>[] {
-			Handler0.class, Handler0Multi.class,
-			Handler1.class, Handler1Multi.class,
-			Handler2.class, Handler2Multi.class,
-			Handler3.class, Handler3Multi.class,
-			Handler4.class, Handler4Multi.class,
-			Handler5.class, Handler5Multi.class,}) {
+		String page = readResourceAsUTF8String("page.template");
+		for (Class<?> c : handlerClasses) {
 			boolean multi = c.getName().endsWith("Multi");
 			HashMap<String, String> params = new HashMap<>();
 			params.put("className", c.getName());
 			System.out.println(template(multi ? addMulti : add, params));
-			for (String methodUpcase : new String[] {"GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "TRACE", "CONNECT"}) {
+			for (String methodUpcase : httpMethods) {
 				String methodLowcase = methodUpcase.toLowerCase();
 				params.put("methodUpcase", methodUpcase);
 				params.put("methodLowcase", methodLowcase);
 				System.out.println(template(multi ? methodMulti : method, params));
 			}
+		}
+		for (String methodUpcase : httpMethods) {
+			String methodLowcase = methodUpcase.toLowerCase();
+			HashMap<String, String> params = new HashMap<>();
+			params.put("methodUpcase", methodUpcase);
+			params.put("methodLowcase", methodLowcase);
+			System.out.println(template(page, params));
 		}
 	}
 }
