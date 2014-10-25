@@ -17,7 +17,7 @@ public class Route {
 	public Route(String method, String urlPattern, HandlerBase... handlers) {
 		validateUrlPattern(urlPattern);
 		this.method = method;
-		this.urlPatternRgx = Pattern.compile("^" + urlPattern.replaceAll("/:[a-zA-Z][a-zA-Z0-9]+", "/([^/]+)") + "$");
+		this.urlPatternRgx = urlPatternToRegex(urlPattern);
 		this.handlers = handlers;
 	}
 
@@ -27,6 +27,23 @@ public class Route {
 		if (!urlPatternFormat.matcher(urlPattern).find()) {
 			throw new IllegalArgumentException("Invalid url pattern " + urlPattern);
 		}
+	}
+
+	private String escapeRegexChars(String urlPattern) {
+		String toEscape = ".+*?^$[](){}";
+		StringBuilder out = new StringBuilder();
+		for (char c : urlPattern.toCharArray()) {
+			if (toEscape.indexOf(c) != -1) {
+				out.append("\\").append(c);
+			} else {
+				out.append(c);
+			}
+		}
+		return out.toString();
+	}
+
+	private Pattern urlPatternToRegex(String urlPattern) {
+		return Pattern.compile("^" + escapeRegexChars(urlPattern).replaceAll("/:[a-zA-Z][a-zA-Z0-9]+", "/([^/]+)") + "$");
 	}
 
 	public List<String> matchGetParams(HttpServletRequest request) {
