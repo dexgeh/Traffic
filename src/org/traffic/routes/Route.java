@@ -34,7 +34,7 @@ public class Route {
 
 	private void checkHandlersArity() {
 		for (HandlerBase handler : handlers) {
-			if (handler.getClass().getSimpleName().indexOf(String.valueOf(paramArity)) == -1) {
+			if (handler.getClass().getInterfaces()[0].getSimpleName().indexOf(String.valueOf(paramArity)) == -1) {
 				throw new IllegalArgumentException("Handler signature does not match the url number of variables");
 			}
 		}
