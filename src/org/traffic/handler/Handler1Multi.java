@@ -4,8 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @FunctionalInterface
-public interface Handler1 extends HandlerBase {
-	public void handle(
+public interface Handler1Multi extends HandlerBase {
+	public int handle(
 		HttpServletRequest request,
 		HttpServletResponse response,
 		String param1)
