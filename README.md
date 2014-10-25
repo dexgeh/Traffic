@@ -3,7 +3,9 @@ Traffic
 
 Traffic is an http router for java web applications built around the new java 8 ```@FunctionalInterface```.
 
-It is inspired by express' router for node.js.
+It is inspired by express' router for node.js and has no dependecies.
+
+The current release is available [here](https://github.com/dexgeh/Traffic/releases/download/v0.1/Traffic.jar).
 
 A ```TrafficRouter``` object has methods for adding routes, named after lowercase HTTP methods, and a ```dispatch``` method to execute the routing; it will return a ```true``` value if a route matching the request was found and ```false``` otherwise.
 
