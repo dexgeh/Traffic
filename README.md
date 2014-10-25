@@ -21,6 +21,8 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import org.traffic.TrafficRouter;
+import static org.traffic.handler.HandlerBase.CONTINUE;
+import static org.traffic.handler.HandlerBase.SKIP_NEXT;
 
 public class TestFilter implements Filter {
 	private HashMap<Long, String> users = new HashMap<>();
@@ -29,14 +31,17 @@ public class TestFilter implements Filter {
 		// simplest route
 		.get("/", (req, res) -> {
 			res.getWriter().println("index!");
+			return CONTINUE;
 		})
 		// example of positional parameters
 		.get("/users", (req, res) -> {
 			res.getWriter().println(users);
+			return CONTINUE;
 		})
 		.put("/users/new/:name", (req, res, name) -> {
 			users.put(seq++, name);
 			res.getWriter().println(users);
+			return CONTINUE;
 		})
 		.post("/users/edit/:id/:name", (req, res, id, name) -> {
 			if (users.containsKey(Long.parseLong(id))) {
@@ -45,20 +50,24 @@ public class TestFilter implements Filter {
 			} else {
 				res.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
 			}
+			return CONTINUE;
 		})
 		.delete("/users/:id", (req, res, id) -> {
 			users.remove(Long.parseLong(id));
 			res.getWriter().println(users);
+			return CONTINUE;
 		})
 		// multiple handlers for same route
 		.get("/bookmarks/:id", (req, res, id) -> {
 			if (req.getSession().getAttribute("loggedUser") == null) {
-				throw new Exception("User is not logged in");
+				return SKIP_NEXT;
 			}
+			return CONTINUE;
 		}, (req, res, id) -> {
 			// if the previous handler does not throw an exception
 			Bookmark bookmark = db.fetch((User) req.getAttribute("loggedUser"), id);
 			req.getRequestDispatcher("/pages/bookmark.jsp").forward(req, res);
+			return CONTINUE;
 		})
 	;
 	@Override

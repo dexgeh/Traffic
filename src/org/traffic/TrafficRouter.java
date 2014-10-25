@@ -28,24 +28,28 @@ public class TrafficRouter {
 			List<String> params = null;
 			if ((params = route.matchGetParams(request)) != null) {
 				for (HandlerBase handler : route.handlers) {
+					int retval = -1;
 					switch (params.size()) {
 					case 0:
-						((Handler) handler).handle(request, response);
+						retval = ((Handler) handler).handle(request, response);
 						break;
 					case 1:
-						((Handler1) handler).handle(request, response, params.get(0));
+						retval = ((Handler1) handler).handle(request, response, params.get(0));
 						break;
 					case 2:
-						((Handler2) handler).handle(request, response, params.get(0), params.get(1));
+						retval = ((Handler2) handler).handle(request, response, params.get(0), params.get(1));
 						break;
 					case 3:
-						((Handler3) handler).handle(request, response, params.get(0), params.get(1), params.get(2));
+						retval = ((Handler3) handler).handle(request, response, params.get(0), params.get(1), params.get(2));
 						break;
 					case 4:
-						((Handler4) handler).handle(request, response, params.get(0), params.get(1), params.get(2), params.get(3));
+						retval = ((Handler4) handler).handle(request, response, params.get(0), params.get(1), params.get(2), params.get(3));
 						break;
 					case 5:
-						((Handler5) handler).handle(request, response, params.get(0), params.get(1), params.get(2), params.get(3), params.get(4));
+						retval = ((Handler5) handler).handle(request, response, params.get(0), params.get(1), params.get(2), params.get(3), params.get(4));
+						break;
+					}
+					if (retval == HandlerBase.SKIP_NEXT) {
 						break;
 					}
 				}

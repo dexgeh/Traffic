@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @FunctionalInterface
 public interface Handler1 extends HandlerBase {
-	public void handle(
+	public int handle(
 		HttpServletRequest request,
 		HttpServletResponse response,
 		String param1)
