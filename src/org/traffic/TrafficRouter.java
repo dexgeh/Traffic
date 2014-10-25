@@ -34,7 +34,7 @@ public class TrafficRouter {
 			List<String> params = null;
 			if ((params = route.matchGetParams(request)) != null) {
 				for (HandlerBase handler : route.handlers) {
-					int retval = HandlerBase.END;
+					HandlerResult retval = HandlerResult.UNDEFINED;
 					if (route.handlers.length == 1) {
 						if (params.size() == 0) {
 							((Handler)handler).handle(request, response);
@@ -64,7 +64,7 @@ public class TrafficRouter {
 							retval = ((Handler5Multi)handler).handle(request, response, params.get(0), params.get(1), params.get(2), params.get(3), params.get(4));
 						}
 					}
-					if (retval == HandlerBase.SKIP) {
+					if (retval == HandlerResult.SKIP) {
 						break;
 					}
 				}

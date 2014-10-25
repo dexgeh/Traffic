@@ -36,7 +36,9 @@ Variable names are matched against a regex ```[a-zA-Z][a-zA-Z0-9]+```, and are c
 
 It is mandatory to have matching url and signatures.
 
-Handlers actually support from 0 to 5 variables, and it is possible to add more than one handler to a single route; they are processed in in the order specified, and they have to signal the router about the behavior processing: continue processing other handlers or skip them. 
+Handlers actually support from 0 to 5 variables, and it is possible to add more than one handler to a single route; they are processed in in the order specified, and they have to signal the router about the behavior processing: continue processing other handlers or skip them.
+
+It is mandatory for multiple handlers to have matching url and signature. 
 
 Usage example
 -------------
@@ -46,14 +48,15 @@ A ```TestFilter``` class:
 ```Java
 package org.traffic.test;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.HashMap;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 
 import org.traffic.TrafficRouter;
-import static org.traffic.handler.HandlerBase.CONTINUE;
-import static org.traffic.handler.HandlerBase.SKIP;
+import static org.traffic.HandlerResult.SKIP;
+import static org.traffic.HandlerResult.CONTINUE;
 
 public class TestFilter implements Filter {
 	private HashMap<Long, String> users = new HashMap<>();
@@ -90,7 +93,7 @@ public class TestFilter implements Filter {
 			}
 			return CONTINUE;
 		}, (req, res, id) -> {
-			// if the previous handler return CONTINUE
+			// if the previous handler does not throw an exception
 			Bookmark bookmark = db.fetch((User) req.getAttribute("loggedUser"), id);
 			req.setAttribute("bookmark", bookmark);
 			req.getRequestDispatcher("/pages/bookmark.jsp").forward(req, res);
